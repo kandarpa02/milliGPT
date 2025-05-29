@@ -1,6 +1,7 @@
 import jax
 import jax.numpy as jnp
 from jax import lax
+from decoder.params.param_setup import init_embedding_params
 
 def pos_encoding(seq_len, d_model):
     i = jnp.arange(d_model)
@@ -21,3 +22,15 @@ def pos_encoding(seq_len, d_model):
     return out
 
 pos_encoding = jax.jit(pos_encoding, static_argnames=('d_model', 'seq_len'))
+
+
+def _embed(params, token_idx):
+    emb = params["embedding_table"][token_idx]
+    d_model = params["embedding_table"].shape[1]
+    return emb * jnp.sqrt(d_model)
+
+def word_embedding(params, token_idx):
+    emb = _embed(params, token_idx)
+    pos = pos_encoding(emb.shape[1], emb.shape[2])
+    return emb + pos
+
