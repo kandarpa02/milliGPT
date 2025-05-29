@@ -1,9 +1,11 @@
 name: CI
+
 on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -15,8 +17,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -e .[dev]
+          pip install jax jaxlib flax optax pytest
 
       - name: Run tests
         run: |
-          pytest test/
+          pytest tests/
