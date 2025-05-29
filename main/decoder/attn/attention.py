@@ -12,7 +12,7 @@ def merge_heads(x):
     x = jnp.transpose(x, (0, 2, 1, 3))
     return x.reshape(batch, seq_len, num_heads * head_dim)
 
-def multi_head_attention(X, params, num_heads):
+def multi_head_attention(params, X, num_heads):
     """
     X:     [batch, seq_len, hidden_dim]
     w_q:   [hidden_dim, hidden_dim]

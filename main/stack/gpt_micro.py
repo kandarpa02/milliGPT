@@ -2,7 +2,70 @@ from main.decoder.attn.attention import *
 from main.decoder.embed.embedding import *
 from main.decoder.layernorm.lnorm import *
 from main.decoder.linear.linear_layer import *
+from main.decoder.params.param_setup import *
+import jax
 
 class GPT:
     def __init__(self):
         pass
+
+    @staticmethod
+    def run_fn(X, params:dict):
+
+        # Block 1
+        x1 = word_embedding(params["embed"], X)
+        x1 = layer_norm(params["ln1"], x1)
+        x1_attn = multi_head_attention(params["attn1"], x1, 6)
+        x1_attn += x1
+        x1_fnn = jax.nn.gelu(linear(params["ffn1_fc"], x1_attn))
+        x1_fnn = linear(params["ffn2_fc"], x1_fnn)
+        x2 = x1_fnn + x1_attn
+
+
+        embed_matrix = params["embed"]["embedding_table"]
+        logits = x2 @ embed_matrix.T 
+
+
+        return logits
+
+    def get_params(self):
+        params = {
+            "embed"   : init_embedding_params(42, 10000, 384),
+            "attn1"   : init_attention_param(384, "attn1"),
+            "ln1"     : init_layer_norm_params(384, "ln1"),
+            "ffn1_fc" : init_linear_param(384, 768, "ffn1_fc"),
+            "ffn2_fc" : init_linear_param(768, 384, "ffn2_fc"),
+
+        }
+        return params
+
+
+def count_params(params):
+    total = 0
+
+    def _count(p):
+        nonlocal total
+        if isinstance(p, dict):
+            for v in p.values():
+                _count(v)
+        elif isinstance(p, jnp.ndarray):
+            total += p.size
+
+    _count(params)
+    return total
+
+m = GPT()
+params = m.get_params()
+total_params = count_params(params)
+print(f"Total trainable parameters: {total_params:,}")
+
+""" with one layer of transformer it uses about 3,840,000 parameters
+    and I kept the vocab size 10000, as my dataset is tiny, about that
+    I used a blend of Openwebtext (0.7) and Wiki data (0.3), which is 
+    around 1 gigabyte
+
+    so for now this one layer GPT will here, I will run some experimental
+    training to see if everything is working fine then, I will add more 
+    layers to it.
+
+"""
