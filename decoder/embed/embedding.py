@@ -1,11 +1,23 @@
+import jax
 import jax.numpy as jnp
+from jax import lax
 
 def pos_encoding(seq_len, d_model):
-    position = jnp.arange(seq_len, dtype=jnp.float32).reshape(seq_len, 1)
-    i = jnp.arange(0, d_model, 2)
-    _denominator = jnp.power(1000, i/d_model)
-    pos_even = jnp.sin(position/_denominator)
-    pos_odd = jnp.cos(position/_denominator)
+    i = jnp.arange(d_model)
+    even_i = i[::2]
+    denominator = jnp.power(10000.0, even_i / d_model)
 
-    return jnp.stack([pos_even, pos_odd], axis=2)
+    def body_fn(pos, _):
+        position = jnp.array(pos, dtype=jnp.float32)
+        angle_args = position / denominator
+        row = jnp.zeros(d_model)
 
+        row = row.at[::2].set(jnp.sin(angle_args))
+        row = row.at[1::2].set(jnp.cos(angle_args))
+        return pos + 1, row
+
+    _, out = lax.scan(body_fn, 0, None, length=seq_len)
+    out = out.reshape(seq_len, d_model // 2, 2)
+    return out
+
+pos_encoding = jax.jit(pos_encoding, static_argnames=('d_model', 'seq_len'))
