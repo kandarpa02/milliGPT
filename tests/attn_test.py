@@ -1,5 +1,5 @@
 import jax.random as random
-from decoder.attn.attention import *
+from main.decoder.attn.attention import *
 
 def test():
     key = random.PRNGKey(0)

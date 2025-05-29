@@ -1,6 +1,7 @@
 import jax.numpy as jnp
 import jax.random as random
 
+
 def init_linear_param(in_, out_, layer_name='', key=None):
     if key is None:
         key = random.PRNGKey(0)
@@ -8,6 +9,7 @@ def init_linear_param(in_, out_, layer_name='', key=None):
     w = random.normal(k1, (in_,out_)) * 0.01
     b = jnp.zeros(out_)
     return {f"{layer_name}_w": w, f"{layer_name}_b":b}
+
 
 def init_attention_param(d_model, layer_name='', key=0):
     keys = random.split(key, 4)

@@ -1,4 +1,4 @@
-from decoder.embed.embedding import *
+from main.decoder.embed.embedding import *
 
 def test():
     out = pos_encoding(10, 6)
