@@ -12,7 +12,6 @@ def merge_heads(x):
     x = jnp.transpose(x, (0, 2, 1, 3))
     return x.reshape(batch, seq_len, num_heads * head_dim)
 
-@jax.jit
 def multi_head_attention(X, params, num_heads):
     """
     X:     [batch, seq_len, hidden_dim]
@@ -45,3 +44,4 @@ def multi_head_attention(X, params, num_heads):
     out = merged @ w_o
     return out
 
+multi_head_attention = jax.jit(multi_head_attention, static_argnames=["num_heads"])

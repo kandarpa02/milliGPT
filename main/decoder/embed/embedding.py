@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
 from jax import lax
-from decoder.params.param_setup import init_embedding_params
+from main.decoder.params.param_setup import init_embedding_params
 
 def pos_encoding(seq_len, d_model):
     i = jnp.arange(d_model)
