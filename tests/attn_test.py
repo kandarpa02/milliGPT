@@ -1,7 +1,7 @@
 import jax.random as random
 from decoder.attn.attention import *
 
-def test1():
+def test():
     key = random.PRNGKey(0)
     x, k1 = random.split(key)
     X = random.normal(x, (1, 6, 4))
