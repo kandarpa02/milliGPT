@@ -18,7 +18,7 @@ def pos_encoding(seq_len, d_model):
         return pos + 1, row
 
     _, out = lax.scan(body_fn, 0, None, length=seq_len)
-    out = out.reshape(seq_len, d_model // 2, 2)
+    out = out = out.reshape(seq_len, d_model)
     return out
 
 pos_encoding = jax.jit(pos_encoding, static_argnames=('d_model', 'seq_len'))
@@ -29,8 +29,16 @@ def _embed(params, token_idx):
     d_model = params["embedding_table"].shape[1]
     return emb * jnp.sqrt(d_model)
 
-def word_embedding(params, token_idx):
-    emb = _embed(params, token_idx)
-    pos = pos_encoding(emb.shape[1], emb.shape[2])
-    return emb + pos
+def word_embedding(params, tokens):
+    emb_table = params["embedding_table"] 
+    d_model = emb_table.shape[1]
+
+    embeddings = emb_table[tokens] * jnp.sqrt(d_model)
+
+    seq_len = tokens.shape[1]
+    pos = pos_encoding(seq_len, d_model)  # (seq_len, d_model)
+    pos = jnp.expand_dims(pos, axis=0)    # (1, seq_len, d_model)
+
+    return embeddings + pos 
+
 
