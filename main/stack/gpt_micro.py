@@ -5,10 +5,20 @@ from main.decoder.linear.linear_layer import *
 from main.decoder.params.param_setup import *
 import jax
 
-class GPT:
+class micro_gpt_1:
     def __init__(self):
         pass
+    """ with one layer of transformer it uses about 3,840,000 parameters
+    and I kept the vocab size 1000, as my dataset Openwebtext10k is tiny,
+    about 50 megabytes, next when I add more layers I would use a much 
+    larger dataset, blend of Openwebtext (0.7) and Wiki data (0.3), which is 
+    around 1 gigabyte
 
+    so for now this one layer GPT will be here, I will run some experimental
+    training to see if everything is working fine then, I will add more 
+    layers to it.
+
+    """
     @staticmethod
     def run_fn(X, params:dict):
 
@@ -40,32 +50,18 @@ class GPT:
         return params
 
 
-def count_params(params):
-    total = 0
+    def count_params(self):
+        params = self.get_params()
+        total = 0
+        def _count(p):
+            nonlocal total
+            if isinstance(p, dict):
+                for v in p.values():
+                    _count(v)
+            elif isinstance(p, jnp.ndarray):
+                total += p.size
 
-    def _count(p):
-        nonlocal total
-        if isinstance(p, dict):
-            for v in p.values():
-                _count(v)
-        elif isinstance(p, jnp.ndarray):
-            total += p.size
+        _count(params)
+        return total
 
-    _count(params)
-    return total
 
-m = GPT()
-params = m.get_params()
-total_params = count_params(params)
-print(f"Total trainable parameters: {total_params:,}")
-
-""" with one layer of transformer it uses about 3,840,000 parameters
-    and I kept the vocab size 10000, as my dataset is tiny, about that
-    I used a blend of Openwebtext (0.7) and Wiki data (0.3), which is 
-    around 1 gigabyte
-
-    so for now this one layer GPT will here, I will run some experimental
-    training to see if everything is working fine then, I will add more 
-    layers to it.
-
-"""
