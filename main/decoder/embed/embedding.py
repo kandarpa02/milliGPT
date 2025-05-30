@@ -29,9 +29,8 @@ def _embed(params, token_idx):
     d_model = params["embedding_table"].shape[1]
     return emb * jnp.sqrt(d_model)
 
-def word_embedding(params, tokens):
-    for idx, _ in enumerate(tokens):
-        emb = _embed(params, idx)
-        pos = pos_encoding(emb.shape[1], emb.shape[2])
-        return emb + pos
+def word_embedding(params, token_idx):
+    emb = _embed(params, token_idx)
+    pos = pos_encoding(emb.shape[1], emb.shape[2])
+    return emb + pos
 
