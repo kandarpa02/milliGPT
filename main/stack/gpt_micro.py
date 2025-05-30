@@ -9,11 +9,12 @@ class micro_gpt_1:
     def __init__(self, vocab, model_d):
         self.vocab = vocab
         self.model_d = model_d
+
     """ with one layer of transformer it uses about 3,840,000 parameters
-    and I kept the vocab size 1000, as my dataset Openwebtext10k is tiny,
-    about 50 megabytes, next when I add more layers I would use a much 
-    larger dataset, blend of Openwebtext (0.7) and Wiki data (0.3), which is 
-    around 1 gigabyte
+    with 1000 vocab size and 384 dimension and I will try to keep the vocab
+    size 1000, as my dataset Openwebtext10k is tiny, about 50 megabytes, 
+    next when I add more layers I would use a much larger dataset, blend 
+    of Openwebtext (0.7) and Wiki data (0.3), which is around 1 gigabyte
 
     so for now this one layer GPT will be here, I will run some experimental
     training to see if everything is working fine then, I will add more 
