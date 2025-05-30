@@ -6,8 +6,9 @@ from main.decoder.params.param_setup import *
 import jax
 
 class micro_gpt_1:
-    def __init__(self):
-        pass
+    def __init__(self, vocab, model_d):
+        self.vocab = vocab
+        self.model_d = model_d
     """ with one layer of transformer it uses about 3,840,000 parameters
     and I kept the vocab size 1000, as my dataset Openwebtext10k is tiny,
     about 50 megabytes, next when I add more layers I would use a much 
@@ -40,11 +41,11 @@ class micro_gpt_1:
 
     def get_params(self):
         params = {
-            "embed"   : init_embedding_params(42, 10000, 384),
-            "attn1"   : init_attention_param(384, "attn1"),
-            "ln1"     : init_layer_norm_params(384, "ln1"),
-            "ffn1_fc" : init_linear_param(384, 768, "ffn1_fc"),
-            "ffn2_fc" : init_linear_param(768, 384, "ffn2_fc"),
+            "embed"   : init_embedding_params(42, self.vocab, self.model_d),
+            "attn1"   : init_attention_param(self.model_d, "attn1"),
+            "ln1"     : init_layer_norm_params(self.model_d, "ln1"),
+            "ffn1_fc" : init_linear_param(self.model_d, 2 * self.model_d, "ffn1_fc"),
+            "ffn2_fc" : init_linear_param(2 * self.model_d, self.model_d, "ffn2_fc"),
 
         }
         return params
