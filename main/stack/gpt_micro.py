@@ -45,7 +45,7 @@ class micro_gpt_1:
             "embed"   : init_embedding_params(42, self.vocab, self.model_d),
             "attn1"   : init_attention_param(self.model_d, "attn1"),
             "ln1"     : init_layer_norm_params(self.model_d, "ln1"),
-            "ffn1_fc" : init_linear_param(self.model_d, 2 * self.model_d, "ffn1_fc"),
+            "ffn1_fc" : init_linear_param(self.model_d, 4 * self.model_d, "ffn1_fc"),
             "ffn2_fc" : init_linear_param(4 * self.model_d, self.model_d, "ffn2_fc"),
 
         }
