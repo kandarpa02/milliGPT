@@ -161,8 +161,9 @@ class micro_gpt_4:
             if isinstance(p, dict):
                 for v in p.values():
                     _count(v)
-            elif isinstance(p, jnp.ndarray):
+            elif isinstance(p, (jnp.ndarray, np.ndarray)):
                 total += p.size
+            # else: ignore anything that isn’t ndarray
 
         _count(params)
         return total
