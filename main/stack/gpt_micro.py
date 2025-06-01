@@ -55,15 +55,15 @@ class micro_gpt_1:
     def count_params(self):
         params = self.get_params()
         total = 0
-        def _count(p):
-            nonlocal total
-            if isinstance(p, dict):
-                for v in p.values():
-                    _count(v)
-            elif isinstance(p, jnp.ndarray):
-                total += p.size
 
-        _count(params)
+        for i in params.keys():
+            if isinstance(params[i], dict):
+                for j in params[i].keys():
+                    total += params[i][j].size
+            elif isinstance(params[i], tuple):
+                for k in params[i]:
+                    total += k.size
+
         return total
 
 class micro_gpt_4:
@@ -156,16 +156,14 @@ class micro_gpt_4:
         params = self.get_params()
         total = 0
 
-        def _count(p):
-            nonlocal total
-            if isinstance(p, dict):
-                for v in p.values():
-                    _count(v)
-            elif isinstance(p, (jnp.ndarray, np.ndarray)):
-                total += p.size
-            # else: ignore anything that isn’t ndarray
+        for i in params.keys():
+            if isinstance(params[i], dict):
+                for j in params[i].keys():
+                    total += params[i][j].size
+            elif isinstance(params[i], tuple):
+                for k in params[i]:
+                    total += k.size
 
-        _count(params)
         return total
 
 
