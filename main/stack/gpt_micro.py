@@ -22,12 +22,12 @@ class micro_gpt_1:
 
     """
     @staticmethod
-    def run_fn(X, params:dict):
+    def run_fn(X, params:dict, num_heads):
 
         # Block 1
         x1 = word_embedding(params["embed"], X)
         x1 = layer_norm(params["ln1"], x1)
-        x1_attn = multi_head_attention(params["attn1"], x1, 6)
+        x1_attn = multi_head_attention(params["attn1"], x1, num_heads)
         x1_attn += x1
         x1_fnn = jax.nn.gelu(linear(params["ffn1_fc"], x1_attn))
         x1_fnn = linear(params["ffn2_fc"], x1_fnn)
@@ -73,14 +73,14 @@ class micro_gpt_2:
         self.model_d = model_d
 
     @staticmethod
-    def run_fn(X, params:dict):
+    def run_fn(X, params:dict, num_heads):
 
         # Embedding and first layer norm
         x = word_embedding(params["embed"], X)
         
         # Block 1
         x1 = layer_norm(params["ln1"], x)
-        x1_attn = multi_head_attention(params["attn1"], x1, 6)
+        x1_attn = multi_head_attention(params["attn1"], x1, num_heads)
         x1 = x1 + x1_attn
         x1_ff = jax.nn.gelu(linear(params["ffn1_fc"], x1))
         x1_ff = linear(params["ffn2_fc"], x1_ff)
@@ -88,7 +88,7 @@ class micro_gpt_2:
 
         # Block 2
         x3 = layer_norm(params["ln2"], x2)
-        x3_attn = multi_head_attention(params["attn2"], x3, 6)
+        x3_attn = multi_head_attention(params["attn2"], x3, num_heads)
         x3 = x3 + x3_attn
         x3_ff = jax.nn.gelu(linear(params["ffn3_fc"], x3))
         x3_ff = linear(params["ffn4_fc"], x3_ff)
@@ -148,12 +148,12 @@ class micro_gpt_4:
     """
 
     @staticmethod
-    def run_fn(X, params: dict):
+    def run_fn(X, params: dict, num_heads):
         x = word_embedding(params["embed"], X)            
 
         # Block 1 
         x_norm = layer_norm(params["ln1"], x)
-        attn_out = multi_head_attention(params["attn1"], x_norm, 6)
+        attn_out = multi_head_attention(params["attn1"], x_norm, num_heads)
         attn_res = attn_out + x                             
         ffn_hidden = jax.nn.gelu(linear(params["ffn1_fc"], attn_res))
         ffn_out = linear(params["ffn1_proj"], ffn_hidden)
@@ -161,7 +161,7 @@ class micro_gpt_4:
 
         # Block 2 
         x_norm = layer_norm(params["ln2"], x)
-        attn_out = multi_head_attention(params["attn2"], x_norm, 6)
+        attn_out = multi_head_attention(params["attn2"], x_norm, num_heads)
         attn_res = attn_out + x
         ffn_hidden = jax.nn.gelu(linear(params["ffn2_fc"], attn_res))
         ffn_out = linear(params["ffn2_proj"], ffn_hidden)
@@ -169,7 +169,7 @@ class micro_gpt_4:
 
         # Block 3 
         x_norm = layer_norm(params["ln3"], x)
-        attn_out = multi_head_attention(params["attn3"], x_norm, 6)
+        attn_out = multi_head_attention(params["attn3"], x_norm, num_heads)
         attn_res = attn_out + x
         ffn_hidden = jax.nn.gelu(linear(params["ffn3_fc"], attn_res))
         ffn_out = linear(params["ffn3_proj"], ffn_hidden)
@@ -177,7 +177,7 @@ class micro_gpt_4:
 
         # Block 4 
         x_norm = layer_norm(params["ln4"], x)
-        attn_out = multi_head_attention(params["attn4"], x_norm, 6)
+        attn_out = multi_head_attention(params["attn4"], x_norm, num_heads)
         attn_res = attn_out + x
         ffn_hidden = jax.nn.gelu(linear(params["ffn4_fc"], attn_res))
         ffn_out = linear(params["ffn4_proj"], ffn_hidden)
