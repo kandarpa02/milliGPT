@@ -66,6 +66,72 @@ class micro_gpt_1:
 
         return total
 
+
+class micro_gpt_2:
+    def __init__(self, vocab, model_d):
+        self.vocab = vocab
+        self.model_d = model_d
+
+    @staticmethod
+    def run_fn(X, params:dict):
+
+        # Embedding and first layer norm
+        x = word_embedding(params["embed"], X)
+        
+        # Block 1
+        x1 = layer_norm(params["ln1"], x)
+        x1_attn = multi_head_attention(params["attn1"], x1, 6)
+        x1 = x1 + x1_attn
+        x1_ff = jax.nn.gelu(linear(params["ffn1_fc"], x1))
+        x1_ff = linear(params["ffn2_fc"], x1_ff)
+        x2 = x1 + x1_ff
+
+        # Block 2
+        x3 = layer_norm(params["ln2"], x2)
+        x3_attn = multi_head_attention(params["attn2"], x3, 6)
+        x3 = x3 + x3_attn
+        x3_ff = jax.nn.gelu(linear(params["ffn3_fc"], x3))
+        x3_ff = linear(params["ffn4_fc"], x3_ff)
+        x4 = x3 + x3_ff
+
+        embed_matrix = params["embed"]["embedding_table"]
+        logits = x4 @ embed_matrix.T 
+
+        return logits
+
+    def get_params(self):
+        d = self.model_d
+        params = {
+            "embed"   : init_embedding_params(42, self.vocab, d),
+
+            # Layer 1
+            "attn1"   : init_attention_param(d, "attn1"),
+            "ln1"     : init_layer_norm_params(d, "ln1"),
+            "ffn1_fc" : init_linear_param(d, 4 * d, "ffn1_fc"),
+            "ffn2_fc" : init_linear_param(4 * d, d, "ffn2_fc"),
+
+            # Layer 2
+            "attn2"   : init_attention_param(d, "attn2"),
+            "ln2"     : init_layer_norm_params(d, "ln2"),
+            "ffn3_fc" : init_linear_param(d, 4 * d, "ffn3_fc"),
+            "ffn4_fc" : init_linear_param(4 * d, d, "ffn4_fc"),
+        }
+        return params
+
+    def count_params(self):
+        params = self.get_params()
+        total = 0
+        for i in params.keys():
+            if isinstance(params[i], dict):
+                for j in params[i].keys():
+                    total += params[i][j].size
+            elif isinstance(params[i], tuple):
+                for k in params[i]:
+                    total += k.size
+        return total
+
+
+
 class micro_gpt_4:
     def __init__(self, vocab, model_d):
         self.vocab = vocab
@@ -85,7 +151,7 @@ class micro_gpt_4:
     def run_fn(X, params: dict):
         x = word_embedding(params["embed"], X)            
 
-        # ---- Block 1 ----
+        # Block 1 
         x_norm = layer_norm(params["ln1"], x)
         attn_out = multi_head_attention(params["attn1"], x_norm, 6)
         attn_res = attn_out + x                             
@@ -93,7 +159,7 @@ class micro_gpt_4:
         ffn_out = linear(params["ffn1_proj"], ffn_hidden)
         x = ffn_out + attn_res                                
 
-        # ---- Block 2 ----
+        # Block 2 
         x_norm = layer_norm(params["ln2"], x)
         attn_out = multi_head_attention(params["attn2"], x_norm, 6)
         attn_res = attn_out + x
@@ -101,7 +167,7 @@ class micro_gpt_4:
         ffn_out = linear(params["ffn2_proj"], ffn_hidden)
         x = ffn_out + attn_res
 
-        # ---- Block 3 ----
+        # Block 3 
         x_norm = layer_norm(params["ln3"], x)
         attn_out = multi_head_attention(params["attn3"], x_norm, 6)
         attn_res = attn_out + x
@@ -109,7 +175,7 @@ class micro_gpt_4:
         ffn_out = linear(params["ffn3_proj"], ffn_hidden)
         x = ffn_out + attn_res
 
-        # ---- Block 4 ----
+        # Block 4 
         x_norm = layer_norm(params["ln4"], x)
         attn_out = multi_head_attention(params["attn4"], x_norm, 6)
         attn_res = attn_out + x
