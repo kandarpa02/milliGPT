@@ -34,6 +34,8 @@ def multi_head_attention(params, X, num_heads):
     V = split_heads(V, num_heads)
 
     scores = Q @ jnp.swapaxes(K, -1, -2) / jnp.sqrt(head_dim)
+    scores = scores.astype(jnp.float32)
+    
     mask = jnp.tril(jnp.ones((1, 1, seq_len, seq_len), dtype=jnp.float32))
     scores = scores - 1e10 * (1.0 - mask)
 
