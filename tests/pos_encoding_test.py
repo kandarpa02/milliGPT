@@ -1,4 +1,4 @@
-from main.decoder.embed.embedding import *
+from microGPT.decoder.embed.embedding import *
 
 def test():
     out = pos_encoding(10, 6)

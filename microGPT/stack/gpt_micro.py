@@ -1,8 +1,8 @@
-from main.decoder.attn.attention import *
-from main.decoder.embed.embedding import *
-from main.decoder.layernorm.lnorm import *
-from main.decoder.linear.linear_layer import *
-from main.decoder.params.param_setup import *
+from microGPT.decoder.attn.attention import *
+from microGPT.decoder.embed.embedding import *
+from microGPT.decoder.layernorm.lnorm import *
+from microGPT.decoder.linear.linear_layer import *
+from microGPT.decoder.params.param_setup import *
 import jax
 
 class micro_gpt_1:
