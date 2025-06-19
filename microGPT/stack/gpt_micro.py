@@ -43,10 +43,10 @@ class micro_gpt_1:
     def get_params(self):
         params = {
             "embed"   : init_embedding_params(42, self.vocab, self.model_d),
-            "attn1"   : init_attention_param(self.model_d, "attn1"),
-            "ln1"     : init_layer_norm_params(self.model_d, "ln1"),
-            "ffn1_fc" : init_linear_param(self.model_d, 4 * self.model_d, "ffn1_fc"),
-            "ffn2_fc" : init_linear_param(4 * self.model_d, self.model_d, "ffn2_fc"),
+            "attn1"   : init_attention_param(self.model_d),
+            "ln1"     : init_layer_norm_params(self.model_d),
+            "ffn1_fc" : init_linear_param(self.model_d, 4 * self.model_d),
+            "ffn2_fc" : init_linear_param(4 * self.model_d, self.model_d),
 
         }
         return params
@@ -105,16 +105,16 @@ class micro_gpt_2:
             "embed"   : init_embedding_params(42, self.vocab, d),
 
             # Layer 1
-            "attn1"   : init_attention_param(d, "attn1"),
-            "ln1"     : init_layer_norm_params(d, "ln1"),
-            "ffn1_fc" : init_linear_param(d, 4 * d, "ffn1_fc"),
-            "ffn2_fc" : init_linear_param(4 * d, d, "ffn2_fc"),
+            "attn1"   : init_attention_param(d),
+            "ln1"     : init_layer_norm_params(d),
+            "ffn1_fc" : init_linear_param(d, 4 * d),
+            "ffn2_fc" : init_linear_param(4 * d, d),
 
             # Layer 2
-            "attn2"   : init_attention_param(d, "attn2"),
-            "ln2"     : init_layer_norm_params(d, "ln2"),
-            "ffn3_fc" : init_linear_param(d, 4 * d, "ffn3_fc"),
-            "ffn4_fc" : init_linear_param(4 * d, d, "ffn4_fc"),
+            "attn2"   : init_attention_param(d),
+            "ln2"     : init_layer_norm_params(d),
+            "ffn3_fc" : init_linear_param(d, 4 * d),
+            "ffn4_fc" : init_linear_param(4 * d, d),
         }
         return params
 
@@ -192,29 +192,29 @@ class micro_gpt_4:
         params = {
             "embed"      : init_embedding_params(42, self.vocab, self.model_d),
 
-            # ---- Block 1 params ----
-            "ln1"        : init_layer_norm_params(self.model_d, "ln1"),
-            "attn1"      : init_attention_param(self.model_d, "attn1"),
-            "ffn1_fc"    : init_linear_param(self.model_d, 4 * self.model_d, "ffn1_fc"),
-            "ffn1_proj"  : init_linear_param(4 * self.model_d, self.model_d, "ffn1_proj"),
+            # Block 1 params 
+            "ln1"        : init_layer_norm_params(self.model_d),
+            "attn1"      : init_attention_param(self.model_d),
+            "ffn1_fc"    : init_linear_param(self.model_d, 4 * self.model_d),
+            "ffn1_proj"  : init_linear_param(4 * self.model_d, self.model_d),
 
-            # ---- Block 2 params ----
-            "ln2"        : init_layer_norm_params(self.model_d, "ln2"),
-            "attn2"      : init_attention_param(self.model_d, "attn2"),
-            "ffn2_fc"    : init_linear_param(self.model_d, 4 * self.model_d, "ffn2_fc"),
-            "ffn2_proj"  : init_linear_param(4 * self.model_d, self.model_d, "ffn2_proj"),
+            # Block 2 params 
+            "ln2"        : init_layer_norm_params(self.model_d),
+            "attn2"      : init_attention_param(self.model_d),
+            "ffn2_fc"    : init_linear_param(self.model_d, 4 * self.model_d),
+            "ffn2_proj"  : init_linear_param(4 * self.model_d, self.model_d),
 
-            # ---- Block 3 params ----
-            "ln3"        : init_layer_norm_params(self.model_d, "ln3"),
-            "attn3"      : init_attention_param(self.model_d, "attn3"),
-            "ffn3_fc"    : init_linear_param(self.model_d, 4 * self.model_d, "ffn3_fc"),
-            "ffn3_proj"  : init_linear_param(4 * self.model_d, self.model_d, "ffn3_proj"),
+            # Block 3 params
+            "ln3"        : init_layer_norm_params(self.model_d),
+            "attn3"      : init_attention_param(self.model_d),
+            "ffn3_fc"    : init_linear_param(self.model_d, 4 * self.model_d),
+            "ffn3_proj"  : init_linear_param(4 * self.model_d, self.model_d),
 
-            # ---- Block 4 params ----
-            "ln4"        : init_layer_norm_params(self.model_d, "ln4"),
-            "attn4"      : init_attention_param(self.model_d, "attn4"),
-            "ffn4_fc"    : init_linear_param(self.model_d, 4 * self.model_d, "ffn4_fc"),
-            "ffn4_proj"  : init_linear_param(4 * self.model_d, self.model_d, "ffn4_proj"),
+            # Block 4 params 
+            "ln4"        : init_layer_norm_params(self.model_d),
+            "attn4"      : init_attention_param(self.model_d),
+            "ffn4_fc"    : init_linear_param(self.model_d, 4 * self.model_d),
+            "ffn4_proj"  : init_linear_param(4 * self.model_d, self.model_d),
         }
         return params
 
