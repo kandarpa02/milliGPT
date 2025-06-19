@@ -2,7 +2,7 @@ import jax.numpy as jnp
 import jax.random as random
 
 
-def init_linear_param(in_, out_, layer_name='', key=None):
+def init_linear_param(in_, out_, key=None):
     if key is None:
         key = random.PRNGKey(0)
     k1, _ = random.split(key)
@@ -11,7 +11,7 @@ def init_linear_param(in_, out_, layer_name='', key=None):
     return w, b
 
 
-def init_attention_param(d_model, layer_name='', key=0):
+def init_attention_param(d_model, key=0):
     key = random.PRNGKey(key)
     keys = random.split(key, 4)
 
@@ -23,7 +23,7 @@ def init_attention_param(d_model, layer_name='', key=0):
     return W_q, W_k, W_v, W_o
 
 
-def init_layer_norm_params(feature_dim, layer_name=''):
+def init_layer_norm_params(feature_dim):
     gamma = jnp.ones((feature_dim,))
     beta = jnp.zeros((feature_dim,))
     return gamma, beta
