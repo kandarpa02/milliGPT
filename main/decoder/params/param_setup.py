@@ -2,9 +2,8 @@ import jax.numpy as jnp
 import jax.random as random
 
 
-def init_linear_param(in_, out_, key=None):
-    if key is None:
-        key = random.PRNGKey(0)
+def init_linear_param(in_, out_, key=0):
+    key = random.PRNGKey(key)
     k1, _ = random.split(key)
     w = random.normal(k1, (in_,out_)) * 0.01
     b = jnp.zeros(out_)
