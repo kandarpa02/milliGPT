@@ -1,6 +1,6 @@
 # microGPT
 
-<!-- <img src="media/attn_vs_rnn_meme.jpg" alt="attn_vs_rnn_meme" width="100%"> -->
+<img src="media/attn_vs_rnn_meme.jpg" alt="attn_vs_rnn_meme" width="100%">
 
 microGPT is reflexion of how the vanilla **Transformer** layers were coded in 2017 at **Google**. This is a very low level implementation of GPT with pure **math equations and JAX**. **Attention, Embeddings, Layernorm, FFN** all are implemented from scratch to help people who are new in the field of LLMs and learn its core functionalities rather than importing some prebuild modules.
 
