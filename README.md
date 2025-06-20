@@ -1,5 +1,5 @@
 # microGPT 
-- An academic implementation of GPT: only math and JAX
+*An academic implementation of GPT: only math and JAX*
 
 ---
 
