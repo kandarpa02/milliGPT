@@ -14,10 +14,9 @@ class microLM:
                     params[f'{p}'] = self.loaded_params[p]
             return params
 
-    @staticmethod
-    def run_fn(model, X, params:dict, params_new:dict = {}, num_heads=8):
+    def run(self, X, params:dict, params_new:dict = {}, num_heads=8):
         p = params.copy()
         if params_new != {}:
             for key in params_new.keys():
                 p[key] = params_new[key]
-        return model.run_fn(X, p, num_heads)
+        return self.model.run_fn(X, p, num_heads)
