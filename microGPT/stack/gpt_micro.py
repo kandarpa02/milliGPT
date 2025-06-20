@@ -138,11 +138,11 @@ class micro_gpt_4:
         self.model_d = model_d
 
     """
-    This version stacks four Transformer‐style blocks. Each block has:
+    This version stacks four Transformer style blocks. Each block has:
       - LayerNorm
       - Multi-Head Attention (with 6 heads, as before)
       - Residual connection
-      - Feed-Forward Network (GELU → linear)
+      - Feed-Forward Network (GELU -> linear)
       - Residual connection
     The final output is projected against the same embedding matrix to produce logits.
     """
