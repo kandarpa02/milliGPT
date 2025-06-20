@@ -1,5 +1,12 @@
 # microGPT
 
+<p align="center">
+  <img src="https://img.shields.io/github/license/kandarpa02/microGPT?style=flat-square" alt="License">
+  <img src="https://img.shields.io/github/stars/kandarpa02/microGPT?style=flat-square" alt="Stars">
+  <img src="https://img.shields.io/badge/python-3.10%2B-blue.svg?style=flat-square" alt="Python Version">
+</p>
+
+
 <img src="media/6244535664590833481.jpg" alt="attn_vs_rnn_meme" width="100%">
 
 **microGPT** is a reflection of how the original **Transformer** layers were engineered back in 2017 at **Google**. This is a **very low-level implementation** of GPT, built entirely from **math equations and JAX**.
@@ -109,7 +116,7 @@ def get_params(self):
     return params
 ```
 
-Finally, I trained the model for 60 epochs and got around `PPL 17.85`, you can comsider training it further with more diverse datasets!
+Finally, I trained the model for 60 epochs and got around `PPL 17.85`, you can consider training it further with more diverse datasets!
 
 ---
 
