@@ -1,11 +1,7 @@
 # microGPT
+**An academic implementation of GPT: only math and JAX.**
 
-<p align="center">
-  <img src="https://img.shields.io/github/license/kandarpa02/microGPT?style=flat-square" alt="License">
-  <img src="https://img.shields.io/github/stars/kandarpa02/microGPT?style=flat-square" alt="Stars">
-  <img src="https://img.shields.io/badge/python-3.10%2B-blue.svg?style=flat-square" alt="Python Version">
-</p>
-
+---
 
 <img src="media/6244535664590833481.jpg" alt="attn_vs_rnn_meme" width="100%">
 
