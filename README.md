@@ -114,6 +114,8 @@ def get_params(self):
 
 Finally, I trained the model for 60 epochs and got around `PPL 17.85`, you can consider training it further with more diverse datasets!
 
+I will add an inference module soon.
+
 ---
 
 *If you like this repo, do give it a star :)*
