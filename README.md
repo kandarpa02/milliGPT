@@ -28,7 +28,7 @@ pip install requirements.txt
 ### Know your modules:
 The **GPT** stacks are here [gpt_micro.py](microGPT/stack/gpt_micro.py), you will find `micro_gpt_1`, `micro_gpt_2` and `micro_gpt_4`, the previous two **micro_gpt**s were used for experimenting with smaller data such as [openwebtext10k](https://huggingface.co/datasets/stas/openwebtext-10k), those are small but show we can use such compact language models for very domain specific tasks like grocery chatbot, auto-complete for edge devices like smart-watches and many more. 
 
-However in this project I mostly focused on `micro_gpt_4` (17M parameters), which I trained on **TPU v3-8**, with a small subset (around 1GB) of the original Openwebtext dataset, which is approximately 2.22% of the original size.
+However in this project I mostly focused on `micro_gpt_4` (17M parameters), which I trained on **TPU v3-8**, with a small dataset [Openwebtext1G](https://www.kaggle.com/datasets/kandarpasarkar/openwebtext1g) (around 1GB) of the original Openwebtext dataset, which is approximately 2.22% of the original size.
 
 **training config:**
 ```python
