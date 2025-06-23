@@ -112,7 +112,7 @@ def get_params(self):
     return params
 ```
 
-Finally, I trained the model for 60 epochs and got around `PPL 17.85`, you can consider training it further with more diverse datasets!
+Finally, I trained the model for 60 epochs and got around `PPL 17.85`. I will train it further untill it fully converges, and finetune it with some domain specific datasets,
 
 I will add an inference module soon.
 
